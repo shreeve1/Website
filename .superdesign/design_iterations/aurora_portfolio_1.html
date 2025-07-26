@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TestyTech Designs - Portfolio Showcase</title>
+    <meta name="description" content="Modern web development portfolio showcasing innovative projects with stunning aurora effects">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Scripts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="aurora_theme.css">
+    
+    <style>
+        /* Custom CSS Variables and Animations */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-sans) !important;
+            background: var(--background) !important;
+            color: var(--foreground) !important;
+            overflow-x: hidden;
+        }
+
+        /* Aurora Background Animation */
+        .aurora-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: var(--background);
+        }
+
+        .aurora-bg::before,
+        .aurora-bg::after {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: var(--aurora-gradient-1);
+            animation: auroraWave1 8s ease-in-out infinite;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.4;
+        }
+
+        .aurora-bg::after {
+            background: var(--aurora-gradient-2);
+            animation: auroraWave2 12s ease-in-out infinite 2s;
+            filter: blur(80px);
+            opacity: 0.3;
+        }
+
+        @keyframes auroraWave1 {
+            0%, 100% { transform: translateX(-100%) translateY(-20px) rotate(0deg); opacity: 0.3; }
+            50% { transform: translateX(0%) translateY(20px) rotate(180deg); opacity: 0.8; }
+        }
+
+        @keyframes auroraWave2 {
+            0%, 100% { transform: translateX(100%) translateY(30px) rotate(0deg); opacity: 0.2; }
+            50% { transform: translateX(-50%) translateY(-30px) rotate(-180deg); opacity: 0.6; }
+        }
+
+        /* Glass Morphism */
+        .glass {
+            background: var(--glass-bg) !important;
+            backdrop-filter: blur(12px) !important;
+            border: 1px solid var(--glass-border) !important;
+            box-shadow: var(--shadow-lg) !important;
+        }
+
+        .glass-hover:hover {
+            backdrop-filter: blur(16px) !important;
+            transform: translateY(-2px) !important;
+            box-shadow: var(--shadow-xl) !important;
+        }
+
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Section Styling */
+        .section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        /* Navigation Dots */
+        .nav-dots {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--muted);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .nav-dot.active {
+            background: var(--primary);
+            transform: scale(1.2);
+            box-shadow: 0 0 20px var(--primary);
+        }
+
+        .nav-dot:hover {
+            transform: scale(1.1);
+            background: var(--accent);
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(3deg); }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .floating:nth-child(2) { animation-delay: 0.4s; }
+        .floating:nth-child(3) { animation-delay: 0.8s; }
+        .floating:nth-child(4) { animation-delay: 1.2s; }
+
+        /* Project Card Hover Effects */
+        .project-card {
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px) scale(1.05);
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
+
+        .project-card:hover::before {
+            opacity: 0.1;
+        }
+
+        /* Button Styles */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--accent)) !important;
+            color: var(--primary-foreground) !important;
+            border: none !important;
+            padding: 0.75rem 2rem !important;
+            border-radius: var(--radius) !important;
+            font-weight: 600 !important;
+            transition: all 0.3s ease !important;
+            position: relative !important;
+            overflow: hidden !important;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: var(--shadow-xl) !important;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        /* Form Styles */
+        .form-input {
+            background: var(--input) !important;
+            border: 1px solid var(--border) !important;
+            color: var(--foreground) !important;
+            padding: 0.75rem 1rem !important;
+            border-radius: var(--radius-md) !important;
+            transition: all 0.2s ease !important;
+        }
+
+        .form-input:focus {
+            outline: none !important;
+            border-color: var(--ring) !important;
+            box-shadow: 0 0 0 3px var(--ring) !important;
+            transform: scale(1.02) !important;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-dots {
+                right: 1rem;
+            }
+            
+            .section {
+                padding: 1rem;
+            }
+            
+            .floating-images {
+                display: none;
+            }
+        }
+
+        /* Fade In Animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Text Gradient */
+        .text-gradient {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body>
+    <!-- Aurora Background -->
+    <div class="aurora-bg"></div>
+
+    <!-- Navigation Dots -->
+    <div class="nav-dots">
+        <div class="nav-dot active" data-section="hero"></div>
+        <div class="nav-dot" data-section="portfolio"></div>
+        <div class="nav-dot" data-section="about"></div>
+        <div class="nav-dot" data-section="contact"></div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="hero" class="section">
+        <div class="container mx-auto max-w-7xl">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <!-- Left Content -->
+                <div class="space-y-8 fade-in">
+                    <div class="space-y-4">
+                        <h1 class="text-6xl lg:text-7xl font-bold text-gradient">
+                            Welcome to<br>TestyTech Designs
+                        </h1>
+                        <p class="text-xl text-gray-300 leading-relaxed max-w-lg">
+                            Crafting extraordinary digital experiences through innovative web development, 
+                            stunning visual design, and cutting-edge technology solutions.
+                        </p>
+                    </div>
+                    <button class="btn-primary inline-flex items-center gap-2" onclick="scrollToSection('portfolio')">
+                        <span>View Gallery</span>
+                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <!-- Right Floating Images -->
+                <div class="floating-images relative h-96 lg:h-[500px]">
+                    <div class="floating absolute top-0 right-0 w-32 h-32 glass rounded-xl overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=300&h=300&fit=crop" 
+                             alt="Project Preview" class="w-full h-full object-cover">
+                    </div>
+                    <div class="floating absolute top-20 left-10 w-40 h-28 glass rounded-xl overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=280&fit=crop" 
+                             alt="Project Preview" class="w-full h-full object-cover">
+                    </div>
+                    <div class="floating absolute bottom-20 right-20 w-36 h-36 glass rounded-xl overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=360&h=360&fit=crop" 
+                             alt="Project Preview" class="w-full h-full object-cover">
+                    </div>
+                    <div class="floating absolute bottom-0 left-0 w-28 h-40 glass rounded-xl overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=280&h=400&fit=crop" 
+                             alt="Project Preview" class="w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Gallery Section -->
+    <section id="portfolio" class="section">
+        <div class="container mx-auto max-w-7xl">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-5xl font-bold text-gradient mb-6">Portfolio Gallery</h2>
+                <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+                    Explore our collection of innovative projects that showcase creativity, 
+                    technical excellence, and user-centered design.
+                </p>
+            </div>
+
+            <!-- Project Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                <!-- Project 1 -->
+                <div class="project-card glass glass-hover rounded-xl overflow-hidden fade-in">
+                    <div class="relative h-64">
+                        <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?w=600&h=400&fit=crop" 
+                             alt="E-commerce Platform" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 right-4">
+                            <h3 class="text-xl font-semibold text-white mb-2">E-commerce Platform</h3>
+                            <p class="text-gray-200 text-sm">Modern shopping experience with AI recommendations</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="project-card glass glass-hover rounded-xl overflow-hidden fade-in">
+                    <div class="relative h-64">
+                        <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=600&h=400&fit=crop" 
+                             alt="Analytics Dashboard" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 right-4">
+                            <h3 class="text-xl font-semibold text-white mb-2">Analytics Dashboard</h3>
+                            <p class="text-gray-200 text-sm">Real-time data visualization and insights</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="project-card glass glass-hover rounded-xl overflow-hidden fade-in">
+                    <div class="relative h-64">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop" 
+                             alt="Mobile App Design" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 right-4">
+                            <h3 class="text-xl font-semibold text-white mb-2">Mobile App Design</h3>
+                            <p class="text-gray-200 text-sm">Intuitive fitness tracking application</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="project-card glass glass-hover rounded-xl overflow-hidden fade-in">
+                    <div class="relative h-64">
+                        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&h=400&fit=crop" 
+                             alt="SaaS Platform" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 right-4">
+                            <h3 class="text-xl font-semibold text-white mb-2">SaaS Platform</h3>
+                            <p class="text-gray-200 text-sm">Cloud-based project management solution</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 5 -->
+                <div class="project-card glass glass-hover rounded-xl overflow-hidden fade-in">
+                    <div class="relative h-64">
+                        <img src="https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=600&h=400&fit=crop" 
+                             alt="Brand Identity" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 right-4">
+                            <h3 class="text-xl font-semibold text-white mb-2">Brand Identity</h3>
+                            <p class="text-gray-200 text-sm">Complete visual identity for tech startup</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 6 -->
+                <div class="project-card glass glass-hover rounded-xl overflow-hidden fade-in">
+                    <div class="relative h-64">
+                        <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&h=400&fit=crop" 
+                             alt="Web Application" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 right-4">
+                            <h3 class="text-xl font-semibold text-white mb-2">Web Application</h3>
+                            <p class="text-gray-200 text-sm">Interactive learning platform for students</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pagination Dots -->
+            <div class="flex justify-center gap-3">
+                <div class="w-3 h-3 rounded-full bg-primary"></div>
+                <div class="w-3 h-3 rounded-full bg-muted"></div>
+                <div class="w-3 h-3 rounded-full bg-muted"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="container mx-auto max-w-4xl">
+            <div class="glass rounded-2xl p-12 fade-in">
+                <div class="text-center mb-12">
+                    <h2 class="text-5xl font-bold text-gradient mb-6">About TestyTech Designs</h2>
+                    <div class="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto"></div>
+                </div>
+                
+                <div class="space-y-8 text-lg text-gray-300 leading-relaxed">
+                    <p>
+                        At TestyTech Designs, we believe in the power of exceptional digital experiences.
+                        Our team of passionate designers and developers work at the intersection of 
+                        creativity and technology to bring your vision to life.
+                    </p>
+                    
+                    <p>
+                        With over a decade of combined experience in web development, UI/UX design, 
+                        and digital strategy, we've helped businesses of all sizes establish their 
+                        digital presence and achieve their goals through innovative solutions.
+                    </p>
+                    
+                    <p>
+                        Our approach combines cutting-edge technology with human-centered design 
+                        principles, ensuring that every project we deliver not only looks stunning 
+                        but also provides meaningful value to users and drives business results.
+                    </p>
+                    
+                    <div class="grid md:grid-cols-3 gap-8 mt-12 pt-8 border-t border-gray-700">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-primary mb-2">50+</div>
+                            <div class="text-gray-400">Projects Completed</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-accent mb-2">98%</div>
+                            <div class="text-gray-400">Client Satisfaction</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-secondary mb-2">5+</div>
+                            <div class="text-gray-400">Years Experience</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <div class="container mx-auto max-w-7xl">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-5xl font-bold text-gradient mb-6">Get In Touch</h2>
+                <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+                    Ready to start your next project? Let's discuss how we can bring your ideas to life.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12">
+                <!-- Contact Form -->
+                <div class="glass rounded-2xl p-8 fade-in">
+                    <form class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Name</label>
+                            <input type="text" class="form-input w-full" placeholder="Your full name">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Email</label>
+                            <input type="email" class="form-input w-full" placeholder="your.email@example.com">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Message</label>
+                            <textarea rows="6" class="form-input w-full resize-none" 
+                                      placeholder="Tell us about your project..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn-primary w-full">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Map & Contact Info -->
+                <div class="space-y-8 fade-in">
+                    <!-- Embedded Map -->
+                    <div class="glass rounded-2xl overflow-hidden h-64">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d16949.66077442332!2d-122.67902926343275!3d45.51709589290326!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x54950a051d703e13%3A0xfebc36dc49ec79c7!2sPioneer%20Courthouse%20Square!5e0!3m2!1sen!2sus!4v1753503253987!5m2!1sen!2sus"
+                            width="100%" 
+                            height="100%" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy">
+                        </iframe>
+                    </div>
+
+                    <!-- Contact Information -->
+                    <div class="glass rounded-2xl p-8">
+                        <h3 class="text-2xl font-semibold text-white mb-6">Contact Information</h3>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center">
+                                    <i data-lucide="mail" class="w-6 h-6 text-primary"></i>
+                                </div>
+                                <div>
+                                    <div class="text-gray-300">Email</div>
+                                    <div class="text-white font-medium">james@testytech.net</div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center">
+                                    <i data-lucide="phone" class="w-6 h-6 text-accent"></i>
+                                </div>
+                                <div>
+                                    <div class="text-gray-300">Phone</div>
+                                    <div class="text-white font-medium">(503) 563-0509</div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-secondary/20 rounded-lg flex items-center justify-center">
+                                    <i data-lucide="map-pin" class="w-6 h-6 text-secondary"></i>
+                                </div>
+                                <div>
+                                    <div class="text-gray-300">Location</div>
+                                    <div class="text-white font-medium">Portland, OR</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Navigation functionality
+        const navDots = document.querySelectorAll('.nav-dot');
+        const sections = document.querySelectorAll('.section');
+
+        // Smooth scroll to section
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // Navigation dot click handlers
+        navDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const sectionId = dot.getAttribute('data-section');
+                scrollToSection(sectionId);
+            });
+        });
+
+        // Update active navigation dot on scroll
+        function updateActiveNavDot() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navDots.forEach(dot => {
+                dot.classList.remove('active');
+                if (dot.getAttribute('data-section') === current) {
+                    dot.classList.add('active');
+                }
+            });
+        }
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Scroll event listeners
+        window.addEventListener('scroll', () => {
+            updateActiveNavDot();
+        });
+
+        // Form submission handler
+        document.querySelector('form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Add form submission logic here
+            alert('Thank you for your message! We\'ll get back to you soon.');
+        });
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            updateActiveNavDot();
+        });
+
+        // Add parallax effect to floating images
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelectorAll('.floating');
+            const speed = 0.5;
+
+            parallax.forEach(element => {
+                const yPos = -(scrolled * speed);
+                element.style.transform = `translateY(${yPos}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
