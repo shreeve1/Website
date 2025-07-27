@@ -481,23 +481,32 @@
             <div class="grid lg:grid-cols-2 gap-12">
                 <!-- Contact Form -->
                 <div class="glass rounded-2xl p-8 fade-in">
-                    <form class="space-y-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-300 mb-2">Name</label>
-                            <input type="text" class="form-input w-full" placeholder="Your full name">
-                        </div>
+                    <form action="https://formspree.io/f/xdkdgbob" method="POST" accept-charset="UTF-8" class="space-y-6">
+                        <!-- Hidden subject field for better email organization -->
+                        <input type="hidden" name="_subject" value="New contact form submission from TestyTech Designs">
+                        
+                        <!-- Redirect after successful submission -->
+                        <input type="hidden" name="_next" value="https://testytech.net/thank-you">
                         
                         <div>
-                            <label class="block text-sm font-medium text-gray-300 mb-2">Email</label>
-                            <input type="email" class="form-input w-full" placeholder="your.email@example.com">
+                            <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Name</label>
+                            <input type="text" id="name" name="name" class="form-input w-full" placeholder="Your full name" required>
                         </div>
-                        
+
                         <div>
-                            <label class="block text-sm font-medium text-gray-300 mb-2">Message</label>
-                            <textarea rows="6" class="form-input w-full resize-none" 
-                                      placeholder="Tell us about your project..."></textarea>
+                            <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email</label>
+                            <input type="email" id="email" name="_replyto" class="form-input w-full" placeholder="your.email@example.com" required>
                         </div>
-                        
+
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-300 mb-2">Message</label>
+                            <textarea rows="6" id="message" name="message" class="form-input w-full resize-none"
+                                      placeholder="Tell us about your project..." required></textarea>
+                        </div>
+
+                        <!-- Honeypot field for spam protection -->
+                        <input type="text" name="_gotcha" style="display:none !important">
+
                         <button type="submit" class="btn-primary w-full">
                             Send Message
                         </button>
@@ -625,16 +634,54 @@
             updateActiveNavDot();
         });
 
-        // Form submission handler
-        document.querySelector('form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            // Add form submission logic here
-            alert('Thank you for your message! We\'ll get back to you soon.');
-        });
+
 
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', () => {
             updateActiveNavDot();
+
+            // Enhanced form handling with user feedback
+            const form = document.querySelector('form');
+            if (form) {
+                const submitButton = form.querySelector('button[type="submit"]');
+                const originalButtonText = submitButton.textContent;
+                
+                form.addEventListener('submit', (e) => {
+                    // Disable button and show loading state
+                    submitButton.disabled = true;
+                    submitButton.textContent = 'Sending...';
+                    submitButton.style.opacity = '0.7';
+                    
+                    console.log('Form submission detected');
+                    console.log('Form action:', form.action);
+                    console.log('Form method:', form.method);
+
+                    // Log form data for debugging
+                    const formData = new FormData(form);
+                    console.log('Form data:');
+                    for (let [key, value] of formData.entries()) {
+                        console.log(`${key}: ${value}`);
+                    }
+
+                    // Let it submit to Formspree
+                    console.log('Submitting to Formspree...');
+                    
+                    // Reset button state after a delay in case of network issues
+                    setTimeout(() => {
+                        submitButton.disabled = false;
+                        submitButton.textContent = originalButtonText;
+                        submitButton.style.opacity = '1';
+                    }, 5000);
+                });
+                
+                // Handle form errors
+                form.addEventListener('error', () => {
+                    submitButton.disabled = false;
+                    submitButton.textContent = originalButtonText;
+                    submitButton.style.opacity = '1';
+                    alert('There was an error sending your message. Please try again.');
+                });
+            }
         });
 
         // Add parallax effect to floating images

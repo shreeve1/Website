@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Service identification -->
+    <key>Label</key>
+    <string>com.testytech.website</string>
+    
+    <!-- Program to run -->
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>-c</string>
+        <string>cd "/Users/james/Sites/testytech-website" && exec /usr/bin/python3 -m http.server 8080 --bind 0.0.0.0</string>
+    </array>
+
+    <!-- Working directory -->
+    <key>WorkingDirectory</key>
+    <string>/Users/james</string>
+    
+    <!-- Run as current user -->
+    <key>UserName</key>
+    <string>james</string>
+    
+    <!-- Auto-start configuration -->
+    <key>RunAtLoad</key>
+    <true/>
+    
+    <!-- Keep the service running -->
+    <key>KeepAlive</key>
+    <true/>
+    
+    <!-- Restart if it crashes -->
+    <key>SuccessfulExit</key>
+    <false/>
+    
+    <!-- Logging configuration -->
+    <key>StandardOutPath</key>
+    <string>/Users/james/Library/Logs/testytech-website.log</string>
+    
+    <key>StandardErrorPath</key>
+    <string>/Users/james/Library/Logs/testytech-website-error.log</string>
+    
+    <!-- Environment variables -->
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/usr/local/bin:/usr/bin:/bin</string>
+        <key>PYTHONUNBUFFERED</key>
+        <string>1</string>
+    </dict>
+    
+    <!-- Resource limits -->
+    <key>SoftResourceLimits</key>
+    <dict>
+        <key>NumberOfFiles</key>
+        <integer>1024</integer>
+        <key>NumberOfProcesses</key>
+        <integer>100</integer>
+    </dict>
+    
+    <!-- Network service dependency -->
+    <key>StartOnMount</key>
+    <false/>
+    
+    <!-- Process type -->
+    <key>ProcessType</key>
+    <string>Interactive</string>
+    
+    <!-- Throttle restart attempts -->
+    <key>ThrottleInterval</key>
+    <integer>10</integer>
+</dict>
+</plist>

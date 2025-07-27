@@ -1,0 +1,42 @@
+[Unit]
+Description=TestyTech Designs Website
+Documentation=https://github.com/shreeve1/Website
+After=network.target network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/website
+EnvironmentFile=-/etc/default/website
+ExecStart=/usr/bin/python3 -m http.server ${WEBSITE_PORT:-8080} --bind ${WEBSITE_BIND:-0.0.0.0}
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=website
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/www/website
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+LockPersonality=true
+MemoryDenyWriteExecute=true
+RestrictNamespaces=true
+SystemCallFilter=@system-service
+SystemCallErrorNumber=EPERM
+
+# Resource limits
+LimitNOFILE=65536
+LimitNPROC=4096
+
+[Install]
+WantedBy=multi-user.target
